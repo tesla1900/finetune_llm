@@ -491,3 +491,7 @@ laser_gyroscope/inlab/inlab_photos
 
 # ignore pdf
 moessbauer/report/moess_report.pdf
+
+# ignore models
+lora_fused_model/
+mlx_model/

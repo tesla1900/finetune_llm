@@ -337,8 +337,8 @@ if __name__ == "__main__":
     # Freeze all layers other than LORA linears
     model.freeze()
     for l in model.model.layers[len(model.model.layers) - args.lora_layers :]:
-        l.self_attn.q_proj = LoRALinear.from_linear(l.self_attn.q_proj)
-        l.self_attn.v_proj = LoRALinear.from_linear(l.self_attn.v_proj)
+        l.self_attn.q_proj = LoRALinear.from_linear(l.self_attn.q_proj, rank=4) #added rank 4
+        l.self_attn.v_proj = LoRALinear.from_linear(l.self_attn.v_proj, rank=4) #added rank 4
         if hasattr(l, "block_sparse_moe"):
             l.block_sparse_moe.gate = LoRALinear.from_linear(l.block_sparse_moe.gate)
 
