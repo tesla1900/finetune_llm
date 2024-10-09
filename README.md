@@ -27,7 +27,7 @@ Prompt: 6 tokens, 2.517 tokens-per-sec
 Generation: 31 tokens, 10.292 tokens-per-sec
 Peak memory: 13.575 GB
 ```
-This downloaded model is not quantized and uses a lot of memory (check nonquantized_model.ipynb). To quantize it, run: 
+This downloaded model is not quantized and uses a lot of memory (c.f. [this notebook](nonquantized_model.ipynb)). To quantize it, run: 
 ```
 python -m mlx_lm.convert --hf-path mistralai/Mistral-7B-Instruct-v0.3 -q
 ```
@@ -123,12 +123,15 @@ Generation: 38 tokens, 33.753 tokens-per-sec
 Peak memory: 7.776 GB
 ```
 
-Both the models give the correct response but the different style of response is quite clear in the fine-tuned model. The output for prompt 2 and 3 can be found in the notebook. 
+Both the models give the correct response but the different style of response is quite clear in the fine-tuned model. The output for prompt 2 and 3 can be found in the [quantized notebook](quantized.ipynb). 
 
 ### Prompt 4 
 ```
 input:What is the average life expectancy in each country?
-CREATE TABLE countries (country_id INT, country_name VARCHAR(255)); INSERT INTO countries VALUES (1, 'CountryA'), (2, 'CountryB'); CREATE TABLE life_expectancy (country_id INT, life_expectancy DECIMAL(5,2), year INT); INSERT INTO life_expectancy VALUES (1, 75.5, 2020), (2, 80.3, 2020);
+CREATE TABLE countries (country_id INT, country_name VARCHAR(255)); 
+INSERT INTO countries VALUES (1, 'CountryA'), (2, 'CountryB'); 
+CREATE TABLE life_expectancy (country_id INT, life_expectancy DECIMAL(5,2), year INT); 
+INSERT INTO life_expectancy VALUES (1, 75.5, 2020), (2, 80.3, 2020);
 
 expected code: SELECT countries.country_name, AVG(life_expectancy) AS avg_life_expectancy FROM countries INNER JOIN life_expectancy ON countries.country_id = life_expectancy.country_id GROUP BY countries.country_name;
 ```
@@ -164,7 +167,8 @@ For the actual life expectancy data, you would need to replace the life_expectan
 SELECT c.country_name, le.life_expectancy 
 FROM countries c JOIN life_expectancy le ON c.country_id = le.country_id
 WHERE le.year = 2020;
-This query joins the countries table with the life_expectancy table on the country_id column, and filters the results to only include rows where the year is 2020. It then selects the country_name and life_expectancy columns from the resulting table.
+This query joins the countries table with the life_expectancy table on the country_id column, and filters the results to only include rows where the year is 2020. 
+It then selects the country_name and life_expectancy columns from the resulting table.
 ```
 
 Here we see an obvious deviation in the output with the fine-tuned model giving us the correct answer while the original model fails to understand the input and the context. 
